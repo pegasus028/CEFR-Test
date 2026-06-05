@@ -1,0 +1,990 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEFR Adaptive Writing Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#211c14;--ink-soft:#5c5343;--ink-faint:#8a8068;--paper:#f6f0e4;--card:#fffdf7;--line:#e9e0cc;--line-strong:#d8cbac;--accent:#9a3412;--accent-soft:#c2613a;--accent-wash:#fbeee6;--good:#3f6212;--good-wash:#f0f4e6;--warn:#b45309;--danger:#b91c1c;--danger-wash:#fdeceb;--gold:#b08d3e;--gold-soft:#c9a85c;--shadow:0 1px 2px rgba(70,55,20,.05),0 10px 36px rgba(70,55,20,.10);}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:"Inter",system-ui,sans-serif;color:var(--ink);line-height:1.65;margin:0;padding:32px 18px 64px;min-height:100vh;
+  background:var(--paper);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b08d3e' stroke-opacity='0.07' stroke-width='1'%3E%3Cpath d='M28 2 L54 28 L28 54 L2 28 Z'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3C/g%3E%3C/svg%3E"),radial-gradient(circle at 16% 10%,rgba(255,253,247,.9) 0,transparent 42%),radial-gradient(circle at 84% 90%,rgba(201,168,92,.16) 0,transparent 46%);
+  background-attachment:fixed;}
+.container{max-width:760px;margin:0 auto;background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;position:relative;}
+.container::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-soft),var(--gold),var(--gold-soft));z-index:5;}
+.inner{padding:clamp(24px,5vw,46px);}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(2rem,6vw,2.9rem);line-height:1.05;margin:0 0 18px;}
+h2{font-family:"Fraunces",serif;font-weight:600;font-size:1.7rem;margin:0 0 10px;}
+h3{font-family:"Fraunces",serif;font-weight:600;font-size:1.25rem;margin:0 0 6px;}
+.lede{font-size:1.06rem;color:var(--ink-soft);margin:0 0 16px;max-width:54ch;}
+.meta-note{font-size:.9rem;color:var(--ink-faint);display:flex;gap:10px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:26px 0 24px;}
+.meta-note svg{flex:none;margin-top:3px;}
+ul.rules{margin:0 0 30px;padding-left:18px;color:var(--ink-soft);font-size:.96rem;}ul.rules li{margin-bottom:7px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(24px,5vw,46px);border-bottom:1px solid var(--line);}
+.stage-label{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+.stage-label b{color:var(--accent);font-weight:600;}
+.pips{display:flex;gap:7px;}
+.pip{width:9px;height:9px;border-radius:50%;background:var(--line-strong);transition:all .4s ease;}
+.pip.done{background:var(--accent-soft);}.pip.active{background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash);transform:scale(1.15);}
+.timer{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums;font-weight:600;font-size:1.02rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:7px 13px;transition:.3s;}
+.timer svg{flex:none;}
+.timer.warn{color:var(--warn);background:#fdf6ec;border-color:#f0d9b5;}
+.timer.danger{color:var(--danger);background:var(--danger-wash);border-color:#f3c9c6;animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* scene image */
+.scene{position:relative;margin:0 0 22px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 10px rgba(70,55,20,.08);}
+.scene img{display:block;width:100%;height:auto;}
+.scene .scene-cap{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 10px;background:linear-gradient(transparent,rgba(28,22,15,.72));color:#fff;font-family:"Fraunces",serif;font-size:1.02rem;}
+.prompt-tag{display:inline-block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);background:var(--accent-wash);border:1px solid #f0d3c4;padding:4px 11px;border-radius:14px;font-weight:600;margin-bottom:14px;}
+.instructions{font-size:.95rem;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 24px;}
+
+.gitem{margin-bottom:26px;padding-bottom:22px;border-bottom:1px dashed var(--line);}
+.gitem:last-of-type{border-bottom:none;}
+.ihead{display:flex;gap:10px;align-items:baseline;margin-bottom:9px;}
+.inum{font-family:"Fraunces",serif;font-weight:600;color:#fff;background:var(--accent);min-width:25px;height:25px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:.86rem;flex:none;}
+.iq{font-size:1.04rem;font-weight:500;flex:1;}
+.ihelp{font-size:.78rem;color:var(--ink-faint);margin:0 0 10px;}
+.qsentence{font-size:1.04rem;line-height:1.7;margin:2px 0 12px;}
+.tray{display:flex;flex-wrap:wrap;gap:9px;padding:12px;border:1.5px dashed var(--line-strong);border-radius:12px;background:#fdf8ef;min-height:54px;align-content:flex-start;}
+.tray.answer{border-style:solid;border-color:var(--accent-soft);background:#fffaf3;margin-bottom:9px;}
+.tray.vert{flex-direction:column;}
+.tray-label{width:100%;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600;margin-bottom:2px;}
+.chip{padding:9px 13px;background:#fff;border:1.5px solid var(--line-strong);border-radius:9px;font-size:.95rem;cursor:pointer;user-select:none;touch-action:none;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.12s;}
+.chip.seg{display:block;width:100%;}
+.chip:hover{border-color:var(--accent-soft);}
+.chip.tap-sel{border-color:var(--accent);background:var(--accent-wash);box-shadow:0 0 0 3px var(--accent-wash);}
+.proof{font-size:1.06rem;line-height:2.0;}
+.word{cursor:pointer;padding:2px 5px;border-radius:6px;transition:.12s;}
+.word:hover{background:#f1e6d4;}.word.flagged{background:var(--accent);color:#fff;}
+.proof{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.proof .etile{padding:8px 12px;border:1.5px solid var(--line-strong);border-radius:9px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04);}
+.proof .etile:hover{border-color:var(--accent-soft);background:#fffaf6;}
+.proof .etile.flagged{background:var(--accent);color:#fff;border-color:var(--accent);}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;align-items:start;}
+.col-label{font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);font-weight:600;margin-bottom:5px;}
+.m-col{display:flex;flex-direction:column;gap:7px;}
+.m-item{padding:9px 8px;border:1.5px solid var(--line-strong);border-radius:9px;background:#fff;font-size:.86rem;cursor:pointer;transition:.12s;word-break:break-word;line-height:1.3;}
+.m-item.sel{border-color:var(--accent);background:var(--accent-wash);}
+.m-item.matched{border-color:var(--good);background:var(--good-wash);}
+.m-pairnum{font-size:.66rem;font-weight:600;color:var(--good);margin-left:4px;}
+.reset-btn{margin-top:10px;background:transparent;border:1.5px solid var(--line-strong);color:var(--ink-soft);font-size:.82rem;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;width:auto;display:inline-flex;}
+.reset-btn:hover{border-color:var(--accent-soft);color:var(--accent);background:var(--paper);}
+.inline-select{font:inherit;font-size:1.0rem;color:var(--accent);font-weight:600;background:var(--accent-wash);border:1.5px solid var(--accent-soft);border-radius:8px;padding:3px 8px;cursor:pointer;}
+.morph{display:inline-block;font-size:1.03rem;font-weight:600;color:var(--accent);background:var(--accent-wash);border:1.5px dashed var(--accent-soft);border-radius:8px;padding:2px 11px;cursor:pointer;margin:0 2px;}
+.morph:hover{background:#fbe3d6;}
+.opts{display:grid;gap:8px;}
+.opt{display:flex;align-items:center;gap:11px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;transition:.15s;font-size:.96rem;}
+.opt:hover{border-color:var(--accent-soft);background:#fffaf6;}
+.opt.sel{border-color:var(--accent);background:var(--accent-wash);}
+.opt .dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--line-strong);flex:none;display:inline-flex;align-items:center;justify-content:center;}
+.opt.sel .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.opt .ltr{font-size:.72rem;font-weight:600;color:var(--ink-faint);}
+
+.prompt-box{background:linear-gradient(180deg,#fffefb,#fdfaf4);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:12px;padding:22px 26px;margin:0 0 22px;}
+.prompt-box p{font-family:"Newsreader",Georgia,serif;font-size:1.18rem;line-height:1.6;color:#2a2722;margin:0;}
+.prompt-box ol{font-family:"Newsreader",Georgia,serif;font-size:1.06rem;color:#2a2722;margin:12px 0 0;padding-left:22px;}
+.prompt-box ol li{margin-bottom:5px;}
+.task-meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.88rem;color:var(--ink-faint);margin:0 0 16px;}
+.task-meta b{color:var(--ink-soft);font-weight:600;}
+textarea{width:100%;min-height:240px;font-family:"Newsreader",Georgia,serif;font-size:1.1rem;line-height:1.7;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:18px 20px;resize:vertical;transition:border-color .18s;}
+textarea:focus{outline:none;border-color:var(--accent-soft);}
+textarea:disabled{background:var(--paper);color:var(--ink-faint);}
+.wc-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 2px 0;font-size:.9rem;color:var(--ink-faint);flex-wrap:wrap;}
+.wc-count{font-weight:600;}.wc-count b{color:var(--accent);}.wc-hint b{color:var(--accent);}
+
+button.main{font-family:"Inter",sans-serif;background:var(--accent);color:#fff;border:none;padding:16px 28px;font-size:1.02rem;border-radius:11px;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:24px;transition:background .2s,transform .08s;}
+button.main:hover{background:var(--accent-soft);}
+button.main:active{transform:scale(.99);}
+button.main:disabled{background:var(--line-strong);cursor:not-allowed;transform:none;}
+
+.grading{text-align:center;padding:60px 20px;}
+.spinner{width:42px;height:42px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;margin:0 auto 22px;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.grading p{color:var(--ink-soft);font-size:1.02rem;}
+
+/* pop-up results tile */
+.overlay{position:fixed;inset:0;background:rgba(40,30,15,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;animation:fade .25s ease both;}
+.overlay.hidden{display:none;}
+.tile{background:var(--card);border-radius:18px;border:1px solid var(--line);box-shadow:0 20px 60px rgba(40,30,15,.3);max-width:420px;width:100%;overflow:hidden;animation:pop .3s cubic-bezier(.2,.9,.3,1.2) both;}
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.tile-top{padding:22px 26px 16px;text-align:center;}
+.tile-score{font-family:"Fraunces",serif;font-size:2.6rem;font-weight:600;line-height:1;margin:8px 0 4px;}
+.tile-score.pass{color:var(--good);}.tile-score.fail{color:var(--accent);}
+.tile-badge{display:inline-block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:4px 11px;border-radius:14px;}
+.tile-badge.pass{color:var(--good);background:var(--good-wash);border:1px solid #d8e4bf;}
+.tile-badge.fail{color:var(--accent);background:var(--accent-wash);border:1px solid #f0d3c4;}
+.tile-msg{font-size:.96rem;color:var(--ink-soft);margin:10px 0 0;}
+.tile-items{padding:4px 26px 8px;display:flex;flex-direction:column;gap:6px;}
+.tile-q{display:flex;align-items:center;gap:9px;font-size:.86rem;padding:7px 10px;border-radius:8px;background:var(--paper);}
+.tile-q .mark{width:18px;height:18px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;}
+.tile-q .mark.ok{background:var(--good);}.tile-q .mark.no{background:var(--accent);}.tile-q .mark.un{background:var(--ink-faint);}
+.tile-q .qlabel{color:var(--ink-soft);}
+.tile-btn{padding:16px 26px 22px;}
+
+#results-screen{text-align:center;}
+.result-badge{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--good);background:var(--good-wash);border:1px solid #d8e4bf;padding:6px 14px;border-radius:20px;font-weight:600;margin-bottom:8px;}
+
+/* Panes and Progress Bar CSS */
+.pane { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin: 0 0 24px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.pane.overall-pane { border: 2px solid var(--gold-soft); background: var(--card); }
+.pane-title { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin: 0 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+.pane-title .badge { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 1rem; letter-spacing: 0.05em;}
+.pane.overall-pane .pane-title .badge { background: var(--gold); color: #fff; font-size: 1.3rem; padding: 6px 16px;}
+.weight-note { font-size: 0.85rem; color: var(--ink-faint); margin-top: 10px; font-style: italic; }
+.feedback-text { font-size: 0.98rem; color: var(--ink-soft); margin: 0 0 14px; line-height: 1.5; background: var(--paper); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line); }
+
+/* Custom Progress Bars */
+.report-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 0.92rem; }
+.report-table th { background: var(--paper); text-align: left; padding: 12px; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 600; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.report-table td { padding: 16px 12px; border: 1px solid var(--line); color: var(--ink); vertical-align: top; }
+.report-table tr:nth-child(even) { background: #faf8f5; }
+
+.bar-wrap { position: relative; height: 16px; background: var(--paper); border: 1px inset var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 5px; }
+.bar-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--gold-soft), var(--accent)); border-radius: 8px; transition: width 1s ease; }
+.bar-labels { display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--ink-faint); font-weight: 600; padding: 0 2px; }
+
+/* In-pane scale display */
+.scale{display:flex;gap:4px;justify-content:center;margin:18px auto 6px;width:100%;}
+.scale .step{flex:1;text-align:center;font-size:.74rem;font-weight:600;color:var(--ink-faint);padding:7px 2px;border-radius:7px;background:var(--paper);border:1px solid var(--line);}
+.scale .step.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+.restart{margin-top:26px;}
+.restart button{background:var(--accent-soft);color:#fff;border:1.5px solid var(--accent-soft);width:100%;padding:14px;border-radius:11px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .2s,border-color .2s;}
+.restart button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.fade{animation:fade .45s ease both;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.hidden{display:none;}
+@media(max-width:520px){.inner{padding:24px 18px;}.prompt-box{padding:18px;}}
+</style></head>
+<body>
+<div class="container">
+  <div id="intro-screen" class="inner fade">
+    <p class="eyebrow">Writing Proficiency · CEFR A1–C1</p>
+    <h1>Adaptive Writing Assessment</h1>
+    <p class="lede">Three short grammar rounds set in real scenarios, then one writing task. The rounds adapt to how you do, and your final writing is analysed automatically.</p>
+    <div class="meta-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a8068" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg><span>Each grammar round shows a scene, then five tasks. Press <b>Check answers</b> to see your round result, then continue. The final writing task is timed and submits automatically when time runs out.</span></div>
+    <ul class="rules"><li>Complete all five tasks in each round, then check your answers.</li><li>In the writing task, develop your ideas and aim for the word count.</li><li>Please work on your own, without dictionaries or translators.</li><li>The writing task notes when the screen is left or text is pasted. A quick interruption (a call or message) is fine — just return to your writing.</li></ul>
+    <button class="main" onclick="startTest()">Begin assessment <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </div>
+
+  <div id="round-screen" class="hidden">
+    <div class="topbar"><span class="stage-label">Round <b id="stage-num">1</b> of 4 · <b id="lvl-num">B1</b></span><div class="pips" id="pips"></div></div>
+    <div class="inner">
+      <div class="scene" id="scene"></div>
+      <span class="prompt-tag" id="round-tag">Scenario</span>
+      <div class="instructions" id="round-instructions"></div>
+      <div id="items"></div>
+      <button class="main" id="check-btn" onclick="submitRound()">Check answers <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>
+    </div>
+  </div>
+
+  <div id="essay-screen" class="hidden">
+    <div class="topbar"><span class="stage-label">Round <b>4</b> of 4 · <b id="essay-lvl">B1</b></span><div class="pips" id="pips2"></div></div>
+    <div class="inner">
+      <span class="prompt-tag" id="essay-tag">Writing task</span>
+      <div class="prompt-box" id="essay-prompt"></div>
+      <div class="task-meta"><span>Suggested length: <b id="word-target"></b></span><span>Time limit: <b id="time-limit"></b></span></div>
+      <textarea id="essay" placeholder="Start writing your response here..." oninput="updateWordCount()" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off"></textarea>
+      <div class="wc-row"><span class="wc-count"><b id="wc-now">0</b> words</span>
+        <div class="timer" id="timer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span id="timer-text">00:00</span></div>
+        <span class="wc-hint" id="wc-hint">target <b>0</b></span></div>
+      <button class="main" id="submit-btn" onclick="submitEssay(false)">Submit writing <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <div id="grading-screen" class="hidden"><div class="grading"><div class="spinner"></div><p id="grading-text">Analysing your writing…</p></div></div>
+
+  <div id="results-screen" class="hidden inner">
+    <span class="result-badge">Assessment complete</span><h2>Writing test assessment report</h2>
+    <div id="report-panes"></div> <!-- Injected via JS -->
+    <div class="restart"><button onclick="returnToDashboard()">Return to dashboard</button></div>
+  </div>
+</div>
+
+<!-- pop-up round result tile -->
+<div class="overlay hidden" id="overlay"><div class="tile">
+  <div class="tile-top"><span class="tile-badge" id="tile-badge"></span><div class="tile-score" id="tile-score">0/5</div><p class="tile-msg" id="tile-msg"></p></div>
+  <div class="tile-items" id="tile-items"></div>
+  <div class="tile-btn"><button class="main" id="tile-next">Next round <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+</div></div>
+
+<script>
+const BANK={"A1_Route":{"level":"A1","theme":"Morning routine / Getting to school","scene":"A1_Route","instructions":"A school morning. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (be)","prompt":"Put the words in order to make a correct sentence.","tiles":["My sister","is","a student","at Satriwithaya School"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Articles (a/an)","tiles":["She","eats","a","apple","every morning","before school"],"errorTile":2,"fix":"an"},{"type":"match","level":"A2","target":"Past simple (irregular verbs)","leftLabel":"Present","rightLabel":"Past","pairs":[{"left":"leave","right":"left"},{"left":"take","right":"took"},{"left":"ride","right":"rode"}]},{"type":"transform","level":"A2","target":"Comparatives","before":"The bus is ","after":" than the train.","forms":["slow","slower","slowest","more slow"],"correct":"slower"},{"type":"radio","level":"A2","target":"Going to (future)","prompt":"Look at the time! She ____ miss the bus.","options":["is going to","going to","will going","go to"],"answer":0}]},"A1_Confirm":{"level":"A1","theme":"A family afternoon at the park","scene":"A1_Confirm","instructions":"An afternoon in the park. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present simple (have got)","prompt":"Put the words in order to make a correct sentence.","tiles":["They","have","got","a new kite"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Subject pronoun","tiles":["Me","like","walking","in the park"],"errorTile":0,"fix":"I"},{"type":"match","level":"A1","target":"Plurals","leftLabel":"Singular","rightLabel":"Plural","pairs":[{"left":"child","right":"children"},{"left":"leaf","right":"leaves"},{"left":"family","right":"families"}]},{"type":"transform","level":"A1","target":"Present simple (3rd person)","before":"The dog ","after":" across the grass.","forms":["run","runs","running","is run"],"correct":"runs"},{"type":"radio","level":"A1","target":"Prepositions of place","prompt":"The picnic blanket is ____ the grass.","options":["on","into","onto","of"],"answer":0}]},"A2_Route":{"level":"A2","theme":"Searching for a lost item in the classroom","scene":"A2_Route","instructions":"A lost item in the classroom. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A1","target":"Present continuous","prompt":"Put the words in order to make a correct sentence.","tiles":["She","is","searching","the classroom"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A1","target":"Plural agreement","tiles":["There","are","three","desk","in the room"],"errorTile":3,"fix":"desks"},{"type":"match","level":"B1","target":"Phrasal verbs","leftLabel":"Phrasal verb","rightLabel":"Meaning","pairs":[{"left":"look for","right":"try to find"},{"left":"give up","right":"stop trying"},{"left":"turn up","right":"appear unexpectedly"}]},{"type":"transform","level":"B1","target":"Present perfect","before":"I ","after":" my keys.","forms":["has lost","have lose","have lost","having lost"],"correct":"have lost"},{"type":"radio","level":"B1","target":"First conditional","prompt":"If anyone ____ it, I hope they will take it to the lost and found office.","options":["finds","find","finding","found"],"answer":0}]},"A2_Confirm":{"level":"A2","theme":"Planning a weekend trip","scene":"A2_Confirm","instructions":"Planning a weekend trip. Build, fix, match, change a word, or choose.","items":[{"type":"build","level":"A2","target":"Past simple","prompt":"Put the words in order to make a correct sentence.","tiles":["We","bought","the","train","tickets"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Past simple (irregular)","tiles":["We","goed","to the website","to check prices"],"errorTile":1,"fix":"went"},{"type":"match","level":"A2","target":"Quantifiers / partitives","leftLabel":"Phrase","rightLabel":"Noun","pairs":[{"left":"A bottle of","right":"water"},{"left":"A slice of","right":"cake"},{"left":"A few","right":"tickets"}]},{"type":"transform","level":"A2","target":"Superlatives","before":"It is the ","after":" flight available.","forms":["cheap","cheaper","cheapest","most cheap"],"correct":"cheapest"},{"type":"radio","level":"A2","target":"Should (advice)","prompt":"We want a good seat. We ____ arrive early.","options":["should","must to","ought","has to"],"answer":0}]},"B1_Route":{"level":"B1","theme":"Organizing a school concert","scene":"B1_Route","instructions":"Organizing a school concert. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Future perfect (passive)","prompt":"Put the words in order to make a correct sentence.","tiles":["By next Friday,","the photos of the concert","will have been","posted online"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"A2","target":"Comparative","tiles":["The","main stage","is","more big","than","the one","in the music room"],"errorTile":3,"fix":"bigger"},{"type":"paraorg","level":"A2","target":"Chronological order","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The band arrived at the hall very early.","First, they built the main music stage.","Then, they set up the food stalls.","Finally, the event started, right on time."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Third conditional","before":"If the band had missed their train, the concert ","after":" ruined.","options":["would have been","was","had been","will be"],"answer":0},{"type":"transform","level":"B2","target":"Passive (present perfect)","before":"The concert ","after":" by a local charity.","forms":["has sponsor","has been sponsored","was been sponsored","is sponsor"],"correct":"has been sponsored"}]},"B1_Confirm":{"level":"B1","theme":"A disastrous restaurant dinner","scene":"B1_Confirm","instructions":"A disastrous restaurant dinner. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B1","target":"Passive voice (simple)","prompt":"Put the words in order to make a correct passive sentence.","tiles":["We","were","given","the","wrong bill"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Present perfect vs past simple","tiles":["When we sat down,","I","have noticed","the dirty glasses"],"errorTile":2,"fix":"noticed"},{"type":"paraorg","level":"B1","target":"Pronouns and sequence","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["Mark ordered the expensive steak for his main course.","When the food arrived, it was completely cold and tasted awful.","He politely called the waiter over to complain about the food.","Because of the terrible service, he decided not to leave a tip."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B1","target":"Second conditional","before":"If the manager cared about customers, he ","after":" immediately.","options":["would apologize","will apologize","apologizes","had apologized"],"answer":0},{"type":"transform","level":"B1","target":"Used to (past habit)","before":"Before it changed owners, this restaurant ","after":" fantastic.","forms":["uses to be","used be","used to be","was use to"],"correct":"used to be"}]},"B2_Route":{"level":"B2","theme":"A difficult construction project","scene":"B2_Route","instructions":"A difficult construction project. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Cleft sentence (it-cleft)","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["It was","the weather","that","delayed","the construction"],"canonicalOrder":[0,1,2,3,4],"acceptedOrders":[]},{"type":"error","level":"B1","target":"Reported speech (backshift)","tiles":["During yesterday's meeting,","the manager","promised that","the team","will","finish on time"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B1","target":"Narrative flow","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A massive storm suddenly flooded the building site.","Faced with this flood, the chief engineer had to choose a solution quickly.","The first solution she considered was to build a temporary bridge.","If that bridge proved unfeasible, her second option was to redirect the river completely."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Inversion (negative adverbial)","before":"Not only ","after":" leak, but the walls also cracked.","options":["did the roof","the roof did","the roof","did leak the roof"],"answer":0},{"type":"transform","level":"C1","target":"Causative (have something done)","before":"The company ","after":" the broken pipes replaced yesterday.","forms":["had","has","is having","have"],"correct":"had"}]},"B2_Confirm":{"level":"B2","theme":"A space exploration mission emergency","scene":"B2_Confirm","instructions":"A space mission emergency. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"B2","target":"Passive (modal)","prompt":"Put the words in order to make a correct sentence.","tiles":["The rocket","must","be launched","by tomorrow"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Mixed conditional","tiles":["If the crew","had packed","enough fuel,","they","will","be safe now"],"errorTile":4,"fix":"would"},{"type":"paraorg","level":"B2","target":"Contrast and linkers","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["The mission was proceeding perfectly until the third day.","On that day, the main engine completely shut down without warning.","Despite this sudden engine shutdown, the commander refused to panic.","Instead, she immediately activated the backup life-support systems."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"B2","target":"Reduced relative clause","before":"The astronauts ","after":" the satellite can return inside.","options":["repairing","who repairing","repaired","they repair"],"answer":0},{"type":"transform","level":"B2","target":"Future continuous","before":"This time next week, the crew ","after":" Mars.","forms":["orbit","orbited","will be orbiting","were orbiting"],"correct":"will be orbiting"}]},"C1_Route":{"level":"C1","theme":"A corporate cybersecurity breach","scene":"C1_Route","instructions":"A corporate cybersecurity breach. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Inversion (conditional)","prompt":"Put the words in order to make a correct formal sentence.","tiles":["Had they upgraded the firewall,","the data","would be","safe"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"B2","target":"Passive infinitive","tiles":["The","security breach","must","investigate","immediately"],"errorTile":3,"fix":"be investigated"},{"type":"paraorg","level":"B2","target":"Exemplification and result","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A severe vulnerability was recently discovered in the corporate network.","Specifically, this flaw allowed hackers to easily bypass the outdated password system.","As a result of that breach, the intruders successfully stole sensitive client information.","To prevent any future data leaks, the CEO has now hired a completely new cybersecurity team."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Cleft (what-cleft)","before":"","after":" shocked the board most was the sheer scale of the theft.","options":["What","That","Something","It"],"answer":0},{"type":"transform","level":"C1","target":"Subjunctive","before":"The lawyers recommended that the CEO ","after":" immediately.","forms":["to resign","resign","resigning","was resigned"],"correct":"resign"}]},"C1_Confirm":{"level":"C1","theme":"An archaeological discovery","scene":"C1_Confirm","instructions":"An archaeological discovery. Build, fix, order the paragraph, choose, or change a word.","items":[{"type":"build","level":"C1","target":"Fronting / emphasis","prompt":"Put the words in order to make a correct emphatic sentence.","tiles":["Never before","had archaeologists","unearthed","such a treasure"],"canonicalOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"error","level":"C1","target":"Inversion agreement","tiles":["Rarely","do","this archaeologist","uncover","such preserved ruins"],"errorTile":1,"fix":"does"},{"type":"paraorg","level":"C1","target":"Argumentative structure","prompt":"Put the sentences in the correct order to form a paragraph.","segments":["A recent archaeological excavation has sparked a fierce debate among historians regarding a newly unearthed stone tablet.","Proponents of the discovery claim that the intricate patterns on this artifact represent humanity's earliest known writing system.","Skeptics, however, dismiss this linguistic interpretation, arguing that the supposed symbols are merely natural geological scratches.","Resolving this polarizing academic dispute will ultimately require advanced microscopic analysis of the contested marks."],"correctOrder":[0,1,2,3],"acceptedOrders":[]},{"type":"dropdown","level":"C1","target":"Ellipsis / substitution","before":"The researchers verified the findings, and the university ","after":" too.","options":["did so","did it make","made so","have did"],"answer":0},{"type":"transform","level":"C1","target":"Unreal past (wish)","before":"The historian wishes he ","after":" the site decades ago.","forms":["excavated","had excavated","has excavated","would excavate"],"correct":"had excavated"}]}};
+const ESSAYS={"A1":{"format":"Social media comment","level":"A1","wordTarget":[25,40],"scenario":"A friend posted a photo of their new pet dog. Leave a friendly comment on the post.","subQuestions":["Say what you think about the dog.","Ask one question about the pet.","Tell your friend one thing you like to do with animals."],"sec":360},"A2":{"format":"Informal letter to a friend","level":"A2","wordTarget":[50,80],"scenario":"Write an informal letter (or message) to a friend about a trip you took recently.","subQuestions":["Describe where you went and who you went with.","Explain how you felt about the trip.","Suggest what your friend should do if they visit the same place."],"sec":480},"B1":{"format":"Formal letter — job application","level":"B1","wordTarget":[100,140],"scenario":"You saw an advertisement for a part-time job at a local café. Write a formal letter applying for the position.","subQuestions":["Discuss why you are interested in the job.","Explain what experience or qualities you would bring to the role.","Say when you are available for an interview or to start working."],"sec":720},"B2":{"format":"Comparative essay","level":"B2","wordTarget":[150,190],"scenario":"Write a comparative essay on the following topic: “The advantages and disadvantages of social media.”","subQuestions":["Discuss the main benefits of social media.","Explain how you feel about its effect on everyday life.","Recommend what individuals or companies should do to use it responsibly."],"sec":900},"C1":{"format":"Persuasive speech","level":"C1","wordTarget":[220,260],"scenario":"Write a speech calling for action on a serious issue: “It is time to end animal testing.”","subQuestions":["Discuss why this issue matters and who is affected by it.","Explain how you feel about the current situation and why change is urgent.","Argue what governments, companies, or individuals should do about it."],"sec":1080}};
+
+const FULL_ORDER=['Pre-A1','A1','A2','B1','B2','C1'];
+const LADDER=['Pre-A1','A1','A2','B1','B2','C1'];
+
+(function(){
+let state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};
+let timerId=null,secondsLeft=0,currentTarget=0,submitting=false;
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function scrollTopNow(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){}try{document.documentElement.scrollTop=0;document.body.scrollTop=0;}catch(e){}try{if(window.parent&&window.parent!==window){window.parent.postMessage({type:'cefr_scrolltop'},'*');}}catch(e){}}
+function stepLevel(lvl,dir){let i=LADDER.indexOf(lvl);if(i<0)i=1;i=Math.max(0,Math.min(LADDER.length-1,i+dir));return LADDER[i];}
+function stepGrammar(lvl,dir){let l=stepLevel(lvl,dir);if(l==='Pre-A1')l='A1';return l;}
+
+function startTest(){document.getElementById('intro-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
+function setPips(elId,active){const p=document.getElementById(elId);if(!p)return;let h='';for(let i=1;i<=4;i++){let c='pip';if(i<active)c+=' done';else if(i===active)c+=' active';h+='<span class="'+c+'"></span>';}p.innerHTML=h;}
+
+/* 1-tap-to-move */
+function draggable(chip) {
+  chip.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const parentTray = chip.closest('.tray');
+    const gitem = chip.closest('.gitem');
+    if(!parentTray || !gitem) return;
+    
+    if (parentTray.dataset.role === 'bank') {
+      gitem.querySelector('[data-role="answer"]').appendChild(chip);
+    } else if (parentTray.dataset.role === 'answer') {
+      gitem.querySelector('[data-role="bank"]').appendChild(chip);
+    }
+  });
+}
+
+function renderRound(){
+  submitting=false;
+  const node=BANK[state.node];
+  state.levelReached=node.level;
+  document.getElementById('stage-num').innerText=state.round;
+  document.getElementById('lvl-num').innerText=node.level;
+  setPips('pips',state.round);
+  document.getElementById('scene').innerHTML='<img src="images/' + node.scene + '.jpg" alt=""><div class="scene-cap">'+esc(node.theme)+'</div>';
+  // Scenario description text removed: the scene image already shows the scenario,
+  // and each question carries its own instruction.
+  document.getElementById('round-tag').innerText='';
+  document.getElementById('round-tag').style.display='none';
+  document.getElementById('round-instructions').innerText='';
+  document.getElementById('round-instructions').style.display='none';
+  const cb=document.getElementById('check-btn');cb.disabled=false;
+  const host=document.getElementById('items');host.innerHTML='';
+  node.items.forEach((it,idx)=>{
+    const w=document.createElement('div');w.className='gitem';w.dataset.idx=idx;
+    let inner='<div class="ihead"><span class="inum">'+(idx+1)+'</span><span class="iq">'+itemQuestion(it)+'</span></div>';
+    if(it.type==='build'){inner+='<div class="ihelp">Tap a word to move it to the answer box. Tap again to return it.</div><div class="tray answer" data-role="answer"><span class="tray-label">Your sentence</span></div><div class="tray" data-role="bank"><span class="tray-label">Word bank</span></div>';}
+    else if(it.type==='paraorg'){inner+='<div class="ihelp">Tap a sentence to move it to the ordered paragraph. Tap again to return it.</div><div class="tray answer vert" data-role="answer"><span class="tray-label">Ordered paragraph</span></div><div class="tray vert" data-role="bank"><span class="tray-label">Sentences (wrong order)</span></div>';}
+    else if(it.type==='error'){inner+='<div class="proof">'+it.tiles.map((wd,i)=>'<span class="word etile" data-i="'+i+'">'+esc(wd)+'</span>').join(' ')+'</div>';}
+    else if(it.type==='match'){inner+='<div class="match"><div><div class="col-label">'+esc(it.leftLabel)+'</div><div class="m-col" data-side="L"></div></div><div><div class="col-label">'+esc(it.rightLabel)+'</div><div class="m-col" data-side="R"></div></div></div><div class="ihelp">Tap an item on the left, then its match on the right.</div><button class="reset-btn" data-reset>Reset matches</button>';}
+    else if(it.type==='transform'){inner+='<div class="qsentence">'+esc(it.before)+'<span class="morph" data-i="0">'+esc(it.forms[0])+'</span>'+esc(it.after)+'</div>';}
+    else if(it.type==='dropdown'){inner+='<div class="qsentence">'+esc(it.before)+'<select class="inline-select"><option value="">— choose —</option></select>'+esc(it.after)+'</div>';}
+    else if(it.type==='radio'){inner+='<div class="opts">'+it.options.map((o,oi)=>'<label class="opt" data-oi="'+oi+'"><span class="dot"></span><span class="ltr">'+'ABCD'[oi]+'</span><span>'+esc(o)+'</span></label>').join('')+'</div>';}
+    w.innerHTML=inner;host.appendChild(w);wireItem(w,it);
+  });
+  document.querySelector('#round-screen .inner').classList.remove('fade');void document.querySelector('#round-screen .inner').offsetWidth;document.querySelector('#round-screen .inner').classList.add('fade');
+  scrollTopNow();
+}
+function itemQuestion(it){
+  if(it.type==='build')return esc(it.prompt);
+  if(it.type==='paraorg')return 'Put the sentences in the correct order';
+  if(it.type==='error')return 'One part of this sentence has a mistake. Tap the part that is wrong.';
+  if(it.type==='match')return 'Match each item on the left to the right.';
+  if(it.type==='dropdown')return 'Choose the correct word(s) from the drop-down list to complete the sentence.';
+  if(it.type==='transform')return 'Tap the word to change its form until the sentence is correct.';
+  if(it.type==='radio')return esc(it.prompt).replace('____','<b style="color:var(--accent-soft)">____</b>');
+  return '';
+}
+function wireItem(w,it){
+  if(it.type==='build'){const bank=w.querySelector('[data-role="bank"]');shuffle(it.tiles.map((_,i)=>i)).forEach(si=>{const c=document.createElement('div');c.className='chip';c.textContent=it.tiles[si];c.dataset.si=si;bank.appendChild(c);draggable(c);});}
+  else if(it.type==='paraorg'){const bank=w.querySelector('[data-role="bank"]');shuffleParaorg(it).forEach(si=>{const c=document.createElement('div');c.className='chip seg';c.textContent=it.segments[si];c.dataset.si=si;bank.appendChild(c);draggable(c);});}
+  else if(it.type==='error'){w.querySelectorAll('.word').forEach(wd=>wd.addEventListener('click',()=>{w.querySelectorAll('.word').forEach(x=>x.classList.remove('flagged'));wd.classList.add('flagged');w._flag=parseInt(wd.dataset.i);}));}
+  else if(it.type==='match'){
+    const L=w.querySelector('[data-side="L"]'),R=w.querySelector('[data-side="R"]');
+    it.pairs.forEach((p,pi)=>{const l=document.createElement('div');l.className='m-item';l.textContent=p.left;l.dataset.k=pi;L.appendChild(l);});
+    shuffle(it.pairs.map((p,pi)=>({t:p.right,k:pi}))).forEach(o=>{const r=document.createElement('div');r.className='m-item';r.textContent=o.t;r.dataset.k=o.k;R.appendChild(r);});
+    let sel=null,n=0;const pairs={};
+    function wire(){L.querySelectorAll('.m-item').forEach(l=>l.onclick=()=>{if(l.classList.contains('matched'))return;L.querySelectorAll('.m-item').forEach(x=>x.classList.remove('sel'));l.classList.add('sel');sel=l;});R.querySelectorAll('.m-item').forEach(r=>r.onclick=()=>{if(!sel||r.classList.contains('matched'))return;n++;sel.classList.remove('sel');sel.classList.add('matched');r.classList.add('matched');sel.dataset.pn=n;r.dataset.pn=n;sel.innerHTML=esc(it.pairs[parseInt(sel.dataset.k)].left)+' <span class="m-pairnum">#'+n+'</span>';r.innerHTML=esc(it.pairs[parseInt(r.dataset.k)].right)+' <span class="m-pairnum">#'+n+'</span>';pairs[sel.dataset.k]=r.dataset.k;sel=null;});}
+    wire();
+    w._matchPairs=pairs;w._matchTotal=it.pairs.length;
+    w.querySelector('[data-reset]').onclick=()=>{Object.keys(pairs).forEach(k=>delete pairs[k]);n=0;sel=null;L.querySelectorAll('.m-item').forEach(x=>{x.classList.remove('matched','sel');x.innerHTML=esc(it.pairs[parseInt(x.dataset.k)].left);});R.querySelectorAll('.m-item').forEach(x=>{x.classList.remove('matched','sel');x.innerHTML=esc(it.pairs[parseInt(x.dataset.k)].right);});wire();};
+  }
+  else if(it.type==='dropdown'){const sel=w.querySelector('select');shuffle(it.options.map((o,i)=>({o,i}))).forEach(x=>{const op=document.createElement('option');op.value=String(x.i);op.textContent=x.o;sel.appendChild(op);});}
+  else if(it.type==='transform'){const m=w.querySelector('.morph');m.addEventListener('click',()=>{let i=(parseInt(m.dataset.i)+1)%it.forms.length;m.dataset.i=i;m.textContent=it.forms[i];});}
+  else if(it.type==='radio'){w.querySelectorAll('.opt').forEach(l=>l.addEventListener('click',()=>{w.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));l.classList.add('sel');}));}
+}
+function shuffleParaorg(it){ 
+  const idx=it.segments.map((_,i)=>i);let s;let guard=0;
+  do{s=shuffle(idx);guard++;}while(guard<20 && s.every((v,i)=>v===it.correctOrder[i]));
+  return s;
+}
+function gradeItem(w,it){
+  if(it.type==='build'){const ans=w.querySelector('[data-role="answer"]');const ord=[...ans.querySelectorAll('.chip')].map(c=>parseInt(c.dataset.si));if(ord.length!==it.tiles.length)return null;const m=a=>a.length===ord.length&&a.every((v,i)=>v===ord[i]);return m(it.canonicalOrder)||(it.acceptedOrders||[]).some(m);}
+  if(it.type==='paraorg'){const ans=w.querySelector('[data-role="answer"]');const ord=[...ans.querySelectorAll('.chip')].map(c=>parseInt(c.dataset.si));if(ord.length!==it.segments.length)return null;const m=a=>a.length===ord.length&&a.every((v,i)=>v===ord[i]);return m(it.correctOrder)||(it.acceptedOrders||[]).some(m);}
+  if(it.type==='error'){if(w._flag==null)return null;return w._flag===it.errorTile;}
+  if(it.type==='match'){const p=w._matchPairs;if(Object.keys(p).length<w._matchTotal)return null;return Object.keys(p).every(k=>p[k]===k);}
+  if(it.type==='dropdown'){const v=w.querySelector('select').value;if(v==='')return null;return parseInt(v)===it.answer;}
+  if(it.type==='transform'){return w.querySelector('.morph').textContent===it.correct;}
+  if(it.type==='radio'){const s=w.querySelector('.opt.sel');if(!s)return null;return parseInt(s.dataset.oi)===it.answer;}
+  return null;
+}
+
+// Extract a human-readable record of what the student actually answered, for the Sheet.
+function readItemResponse(w,it){
+  try{
+    if(it.type==='build'){
+      const ans=w.querySelector('[data-role="answer"]');
+      const words=[...ans.querySelectorAll('.chip')].map(c=>c.textContent.trim());
+      return words.length? words.join(' ') : '(blank)';
+    }
+    if(it.type==='paraorg'){
+      const ans=w.querySelector('[data-role="answer"]');
+      const segs=[...ans.querySelectorAll('.chip')].map(c=>c.dataset.si);
+      return segs.length? ('order '+segs.map(x=>parseInt(x)+1).join('→')) : '(blank)';
+    }
+    if(it.type==='error'){
+      if(w._flag==null) return '(blank)';
+      return 'flagged: "'+it.tiles[w._flag]+'"';
+    }
+    if(it.type==='match'){
+      const p=w._matchPairs||{};
+      const keys=Object.keys(p);
+      if(!keys.length) return '(blank)';
+      return keys.map(k=>it.pairs[parseInt(k)].left+'→'+it.pairs[parseInt(p[k])].right).join('; ');
+    }
+    if(it.type==='dropdown'){
+      const sel=w.querySelector('select'); const v=sel.value;
+      if(v==='') return '(blank)';
+      return '"'+it.options[parseInt(v)]+'"';
+    }
+    if(it.type==='transform'){
+      return '"'+w.querySelector('.morph').textContent+'"';
+    }
+    if(it.type==='radio'){
+      const s=w.querySelector('.opt.sel');
+      if(!s) return '(blank)';
+      return '"'+it.options[parseInt(s.dataset.oi)]+'"';
+    }
+  }catch(e){}
+  return '';
+}
+
+const UPMAP={A1_Route:'A2_Route',A2_Route:'B1_Route',B1_Route:'B2_Route',B2_Route:'C1_Route',C1_Route:'C1_Route'};
+const DOWNMAP={C1_Route:'B2_Route',B2_Route:'B1_Route',B1_Route:'A2_Route',A2_Route:'A1_Route',A1_Route:'A1_Route'};
+const CONFIRM={A1:'A1_Confirm',A2:'A2_Confirm',B1:'B1_Confirm',B2:'B2_Confirm',C1:'C1_Confirm'};
+
+function submitRound(){
+  if(submitting)return;submitting=true;
+  const node=BANK[state.node];
+  const wraps=[...document.querySelectorAll('.gitem')];
+  let score=0,unfinished=0,detail=[],responses=[];
+  wraps.forEach((w,i)=>{const r=gradeItem(w,node.items[i]);const tag=(r===null?'un':(r?'ok':'no'));detail.push(tag);if(r===true)score++;if(r===null)unfinished++;responses.push(readItemResponse(w,node.items[i]));});
+  const passed=score>=3;
+  // record richer history (used later for the personalized report and to break the ceiling)
+  state.scoreHist.push({node:state.node,level:node.level,score:score,unfinished:unfinished,passed:passed,
+    targets:node.items.map((it,i)=>({target:it.target,type:it.type,result:detail[i],response:responses[i]}))});
+
+  let nextAction;
+  if(state.round>=3){
+    // Round 3 = confirmation. Base level on confirm node, then apply a cumulative
+    // correction so a strong overall performer is not capped by one weak early round,
+    // and a weak overall performer is not over-promoted by one lucky round.
+    let essayLevel = passed ? node.level : stepLevel(node.level,-1);
+    essayLevel = applyCumulativeCorrection(essayLevel);
+    state.essayLevel=essayLevel;
+    nextAction=()=>startEssay(essayLevel);
+  } else if(state.round===2){
+    const settle = passed ? stepGrammar(node.level,1) : stepGrammar(node.level,-1);
+    const next=CONFIRM[settle]||CONFIRM[node.level];
+    nextAction=()=>{state.round++;state.node=next;renderRound();};
+  } else {
+    const next = passed ? (UPMAP[state.node]||state.node) : (DOWNMAP[state.node]||state.node);
+    nextAction=()=>{state.round++;state.node=next;renderRound();};
+  }
+  showTile(score,passed,detail,state.round>=3);
+  document.getElementById('tile-next').onclick=()=>{hideTile();nextAction();};
+}
+
+// Breaks the round-1 ceiling: if every round was passed comfortably (>=4/5) the student
+// may step up one band; if every round was failed badly (<=1/5) they step down one.
+function applyCumulativeCorrection(level){
+  const h=state.scoreHist;
+  if(h.length<3) return level;
+  const allStrong=h.every(r=>r.score>=4);
+  const allWeak=h.every(r=>r.score<=1);
+  if(allStrong) return stepLevel(level,1);
+  if(allWeak)   return stepLevel(level,-1);
+  return level;
+}
+
+/* ===== pop-up tile ===== */
+function showTile(score,passed,detail,isLast){
+  document.getElementById('tile-score').textContent=score+'/5';
+  document.getElementById('tile-score').className='tile-score '+(passed?'pass':'fail');
+  const badge=document.getElementById('tile-badge');badge.textContent=passed?'Round passed':'Keep going';badge.className='tile-badge '+(passed?'pass':'fail');
+  let msg;
+  if(isLast){msg=passed?'Great — your writing task will be at this level.':'Your writing task will be set one level lower.';}
+  else{msg=passed?'You move up to a higher level.':'We will adjust to a more comfortable level.';}
+  document.getElementById('tile-msg').textContent=msg;
+  document.getElementById('tile-items').innerHTML=detail.map((d,i)=>{const m=d==='ok'?'ok':(d==='no'?'no':'un');const sym=d==='ok'?'✓':(d==='no'?'✕':'–');const lab=d==='un'?'Not finished':(d==='ok'?'Correct':'Not correct');return '<div class="tile-q"><span class="mark '+m+'">'+sym+'</span><span class="qlabel">Question '+(i+1)+' — '+lab+'</span></div>';}).join('');
+  document.getElementById('tile-next').innerHTML=(isLast?'Continue to writing task':'Next round')+' <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  document.getElementById('overlay').classList.remove('hidden');
+}
+function hideTile(){document.getElementById('overlay').classList.add('hidden');}
+
+/* ===== round 4 essay ===== */
+function fmt(s){const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+function startEssay(level){
+  state.round=4;state.essayLevel=level;
+  document.getElementById('round-screen').classList.add('hidden');
+  document.getElementById('essay-screen').classList.remove('hidden');
+  const promptLevel=(level==='Pre-A1')?'A1':level;
+  const e=ESSAYS[promptLevel]||ESSAYS['B1'];
+  setPips('pips2',4);
+  document.getElementById('essay-lvl').innerText=level;
+  document.getElementById('essay-tag').innerText='Writing task · '+e.format;
+  document.getElementById('essay-prompt').innerHTML='<p>'+esc(e.scenario)+'</p><ol>'+e.subQuestions.map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol>';
+  document.getElementById('word-target').innerText=e.wordTarget[0]+'–'+e.wordTarget[1]+' words';
+  document.getElementById('time-limit').innerText=Math.round(e.sec/60)+' minutes';
+  currentTarget=e.wordTarget[0];
+  const ta=document.getElementById('essay');ta.value='';ta.disabled=false;
+  document.getElementById('wc-hint').innerHTML='target <b>'+currentTarget+'</b>';
+  updateWordCount();document.getElementById('submit-btn').disabled=false;
+  scrollTopNow();startTimer(e.sec);ta.focus();startIntegrityMonitor();
+}
+function startTimer(sec){clearInterval(timerId);secondsLeft=sec;const tEl=document.getElementById('timer'),txt=document.getElementById('timer-text');tEl.classList.remove('warn','danger');txt.innerText=fmt(secondsLeft);timerId=setInterval(()=>{secondsLeft--;if(secondsLeft<0)secondsLeft=0;txt.innerText=fmt(secondsLeft);tEl.classList.remove('warn','danger');if(secondsLeft<=30)tEl.classList.add('danger');else if(secondsLeft<=60)tEl.classList.add('warn');if(secondsLeft<=0){clearInterval(timerId);timerId=null;submitEssay(true);}},1000);}
+function countWords(t){const m=(t||'').trim().match(/[A-Za-z'’-]+/g);return m?m.length:0;}
+function updateWordCount(){const n=countWords(document.getElementById('essay').value);document.getElementById('wc-now').innerText=n;const hint=document.getElementById('wc-hint');if(n>=currentTarget)hint.innerHTML='<b style="color:var(--good);">target reached</b>';else hint.innerHTML='target <b>'+currentTarget+'</b>';}
+
+function reportToHub(level,essayText,payload){
+  try {
+    if(window.parent&&window.parent!==window&&location.hash.indexOf('hub=1')>=0){
+      window.parent.postMessage({
+        type:'cefr_result',
+        level:String(level||''),
+        responses:[(essayText||'').trim()],
+        report: payload || {},
+        aiScores: JSON.stringify((payload&&payload.scores)||{})
+      },'*');
+    }
+  }catch(e){}
+}
+
+function returnToDashboard(){
+  try{
+    if(window.parent&&window.parent!==window){
+      window.parent.postMessage({type:'cefr_return_dashboard'},'*');
+      return;
+    }
+  }catch(e){}
+  restart();
+}
+function restart(){state={round:1,node:'B1_Route',levelReached:'B1',scoreHist:[],essayLevel:null};submitting=false;clearInterval(timerId);hideTile();stopIntegrityMonitor();document.getElementById('results-screen').classList.add('hidden');document.getElementById('essay-screen').classList.add('hidden');document.getElementById('round-screen').classList.remove('hidden');renderRound();}
+
+/* ===== Integrity monitor (essay round only) =====
+   Philosophy: RECORD, don't block. We log interruptions with timestamps and
+   durations so they can be reviewed by a human alongside other evidence.
+   Brief interruptions (an incoming call, a Line message, a notification) are
+   expected and tolerated — only their pattern matters, not a single occurrence.
+   Nothing here ever terminates or auto-submits the test. */
+let acLog=[], acHiddenAt=0, acStart=0, acActive=false;
+// A blur shorter than this (ms) is treated as a normal phone interruption, not a flag.
+const AC_GRACE_MS=15000;
+
+function acNow(){ return Date.now(); }
+function acElapsed(){ return acStart? Math.round((acNow()-acStart)/1000) : 0; }
+
+function onVisChange(){
+  if(!acActive)return;
+  if(document.hidden){
+    acHiddenAt=acNow();
+  } else if(acHiddenAt){
+    const dur=acNow()-acHiddenAt; acHiddenAt=0;
+    acLog.push({type:'blur', atSec:acElapsed(), durMs:dur,
+                flagged: dur>=AC_GRACE_MS});
+  }
+}
+// Record paste, but DO NOT block it — the reviewer sees how much was pasted.
+function onPaste(e){
+  if(!acActive)return;
+  let len=0; try{ len=(e.clipboardData||window.clipboardData).getData('text').length; }catch(_){}
+  acLog.push({type:'paste', atSec:acElapsed(), chars:len, flagged: len>40});
+}
+
+function startIntegrityMonitor(){
+  if(acActive)return; acActive=true; acStart=acNow(); acHiddenAt=0; acLog=[];
+  document.addEventListener('visibilitychange',onVisChange);
+  document.addEventListener('paste',onPaste,true);
+  window.addEventListener('blur',onWinBlur);
+  window.addEventListener('focus',onWinFocus);
+}
+function onWinBlur(){ if(acActive && !document.hidden && !acHiddenAt) acHiddenAt=acNow(); }
+function onWinFocus(){ if(acActive && acHiddenAt && !document.hidden){ const dur=acNow()-acHiddenAt; acHiddenAt=0; acLog.push({type:'blur',atSec:acElapsed(),durMs:dur,flagged:dur>=AC_GRACE_MS}); } }
+
+function stopIntegrityMonitor(){
+  if(!acActive && !acLog.length) return;
+  acActive=false;
+  document.removeEventListener('visibilitychange',onVisChange);
+  document.removeEventListener('paste',onPaste,true);
+  window.removeEventListener('blur',onWinBlur);
+  window.removeEventListener('focus',onWinFocus);
+}
+
+// Produce a compact, human-readable integrity summary for the reviewer.
+function integritySummary(){
+  const blurs=acLog.filter(e=>e.type==='blur');
+  const flaggedBlurs=blurs.filter(e=>e.flagged);
+  const pastes=acLog.filter(e=>e.type==='paste');
+  const flaggedPastes=pastes.filter(e=>e.flagged);
+  const totalAway=Math.round(blurs.reduce((a,e)=>a+(e.durMs||0),0)/1000);
+  let risk='low';
+  if(flaggedPastes.length || flaggedBlurs.length>=3 || totalAway>120) risk='review';
+  if(flaggedPastes.reduce((a,e)=>a+e.chars,0)>200 || flaggedBlurs.length>=5) risk='high';
+  return {
+    risk,
+    leftScreenCount: blurs.length,
+    leftScreenFlagged: flaggedBlurs.length,
+    totalSecondsAway: totalAway,
+    pasteCount: pastes.length,
+    pasteCharsTotal: pastes.reduce((a,e)=>a+e.chars,0),
+    events: acLog
+  };
+}
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_O6mh3294ps_Hj09h9wMy9zQFz1zXZXFEPYVokeV9LaCofllHFapCm-IYfCzVaaMw/exec";
+
+async function submitEssay(timedOut) {
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn.disabled) return; 
+  submitBtn.disabled = true; 
+  
+  clearInterval(timerId); 
+  stopIntegrityMonitor();
+  
+  const ta = document.getElementById('essay');
+  ta.disabled = true; 
+  const essayText = ta.value;
+  
+  document.getElementById('essay-screen').classList.add('hidden');
+  
+  const gs = document.getElementById('grading-screen');
+  gs.classList.remove('hidden');
+  document.getElementById('grading-text').innerText = timedOut ? "Time's up — analysing your writing…" : "Analysing your writing…";
+  scrollTopNow();
+
+  const provisional = state.essayLevel || state.levelReached;
+  const promptLevel = (provisional === 'Pre-A1') ? 'A1' : provisional;
+  const e = ESSAYS[promptLevel] || ESSAYS['B1'];
+
+  // Rotate reassuring messages while the AI works (no behavioural cost).
+  const gt=document.getElementById('grading-text');
+  const msgs=[ (timedOut?"Time's up — analysing your writing…":"Analysing your writing…"),
+               "Checking grammar and vocabulary…","Assessing cohesion and task response…","Finalising your CEFR rating…"];
+  let mi=0; const msgTimer=setInterval(()=>{mi=(mi+1)%msgs.length;gt.innerText=msgs[mi];},2200);
+
+  // Formulate the full context payload to hand entirely to the AI
+  const promptScenario = e.scenario + " (Must include: " + e.subQuestions.join(' ') + ")";
+
+  try {
+    const params = {
+        action: "evaluate_writing",
+        text: essayText,
+        targetLevel: promptLevel,
+        scenario: promptScenario,
+        wordTarget: e.wordTarget[0] + "-" + e.wordTarget[1],
+        timeLimit: Math.round(e.sec/60)
+    };
+    const body = Object.keys(params).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(params[k])).join("&");
+
+    // Abort if the server hangs, so the student isn't stuck on a spinner.
+    const ctrl = ('AbortController' in window) ? new AbortController() : null;
+    const to = ctrl ? setTimeout(()=>ctrl.abort(), 45000) : null;
+
+    const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body,
+        signal: ctrl ? ctrl.signal : undefined
+    });
+    if(to) clearTimeout(to);
+
+    const data = await response.json();
+    clearInterval(msgTimer); gs.classList.add('hidden');
+
+    if (data.ok && data.evaluation) {
+        finishWithAI(essayText, data.evaluation);
+    } else {
+        // Don't surface raw API error JSON (quota/billing/model strings) to students.
+        // Keep the technical detail out of the learner-facing message; it's still
+        // recoverable server-side if needed.
+        finishWithAI(essayText, localFallbackEval(essayText, e,
+          "Automatic AI scoring was temporarily unavailable, so a provisional estimate is shown."));
+    }
+  } catch (err) {
+    clearInterval(msgTimer); gs.classList.add('hidden');
+    finishWithAI(essayText, localFallbackEval(essayText, e,
+      "Saved. AI scoring could not be reached, so a provisional estimate is shown."));
+  }
+}
+
+// Transparent local estimate used ONLY when the AI is unreachable. It is anchored to
+// the task's target level and nudged by length, lexical diversity, and sentence variety,
+// so the student still gets a sensible provisional score instead of zeros.
+function localFallbackEval(text, e, note){
+  const cefrToNum={'Pre-A1':0,'A1':20,'A2':40,'B1':60,'B2':80,'C1':100};
+  const words=(text||'').trim().match(/[A-Za-z'’-]+/g)||[];
+  const n=words.length;
+  const uniq=new Set(words.map(w=>w.toLowerCase())).size;
+  const ttr=n? uniq/n : 0;                          // type-token ratio (vocab variety)
+  const sentences=(text||'').split(/[.!?]+/).filter(s=>s.trim().length>0);
+  const avgLen=sentences.length? n/sentences.length : 0;
+  const target=e.wordTarget[0];
+  const lenAdequacy=Math.max(0,Math.min(100, Math.round(n/target*100)));
+  const anchor=cefrToNum[e.level]!==undefined?cefrToNum[e.level]:60;
+  // Build sub-scores around the anchor with small, bounded heuristic adjustments.
+  const clamp=v=>Math.max(0,Math.min(100,Math.round(v)));
+  const vocab=clamp(anchor + (ttr>0.55?10:ttr<0.35?-12:0));
+  const cohesion=clamp(anchor + (/\b(however|because|therefore|although|firstly|finally|moreover|as a result)\b/i.test(text)?8:-6));
+  const grammar=clamp(anchor + (avgLen>=12?6:avgLen<6?-8:0));
+  const topic=clamp(n<target*0.4?anchor-25:anchor);
+  return {
+    writingLevel: scoreToLevel(clamp((vocab+cohesion+grammar+topic)/4)),
+    feedback: (note||'') + ' (Provisional estimate — pending human review.)',
+    scores:{ wordCount:lenAdequacy, cohesion, grammar, vocabulary:vocab, topicAdherence:topic },
+    provisional:true
+  };
+}
+
+// Map a continuous 0–100 score to a CEFR band. C1 cutoff lowered to 82 so that essays
+// scoring in the high-80s across the ability dimensions are recognised as C1 rather than
+// capped at B2 (the four sub-scores, not the AI's word-label, are the source of truth).
+function scoreToLevel(score) {
+    if(score < 10) return 'Pre-A1';
+    if(score < 30) return 'A1';
+    if(score < 50) return 'A2';
+    if(score < 70) return 'B1';
+    if(score < 82) return 'B2';
+    return 'C1';
+}
+
+// Coerce any AI-returned score to a clean 0–100 number; bad/missing -> fallback.
+function clampScore(v, fallback){
+  const n = (typeof v==='number') ? v : parseFloat(v);
+  if(!isFinite(n)) return fallback;
+  return Math.max(0, Math.min(100, Math.round(n)));
+}
+
+// CEFR axis ticks keyed to the MINIMUM word count per level (Pre-A1=0 … C1=220).
+// These mirror the lower bounds of each level's wordTarget.
+const WC_THRESH = [
+  {w:0,   pos:0},    // Pre-A1
+  {w:25,  pos:20},   // A1
+  {w:50,  pos:40},   // A2
+  {w:100, pos:60},   // B1
+  {w:150, pos:80},   // B2
+  {w:220, pos:100}   // C1
+];
+// Map a validated word count to a 0–100 position on the CEFR axis (linear within
+// each segment). 0 words -> Pre-A1; at/above the C1 minimum -> capped at C1, so extra
+// words never push the bar past C1 (quality is rewarded by the OTHER criteria instead).
+function wordCountToCEFRpos(n){
+  n = Math.max(0, n);
+  if(n <= 0) return 0;
+  for(let i=1;i<WC_THRESH.length;i++){
+    if(n < WC_THRESH[i].w){
+      const a=WC_THRESH[i-1], b=WC_THRESH[i];
+      const frac=(n-a.w)/(b.w-a.w);
+      return Math.round(a.pos + frac*(b.pos-a.pos));
+    }
+  }
+  return 100;
+}
+// Validated word count for SCORING: counts only plausible word tokens, so strings of
+// random letters/symbols can't be padded to inflate the count. A token must contain at
+// least one vowel OR be a known short word, be 1–20 chars, and not be the same letter
+// repeated. This is deliberately lenient on real words but rejects obvious gibberish.
+function validatedWordCount(text){
+  const toks = (text||'').toLowerCase().match(/[a-z'’-]+/g) || [];
+  const shortOk = {a:1,i:1,o:1};               // legitimate single-letter words
+  let n=0;
+  for(const raw of toks){
+    const t = raw.replace(/^[-'’]+|[-'’]+$/g,''); // trim edge punctuation
+    if(!t) continue;
+    if(t.length>20) continue;                     // implausibly long -> skip
+    if(/^(.)\1+$/.test(t)) continue;              // same char repeated (aaaa, zzz) -> skip
+    if(t.length===1){ if(shortOk[t]) n++; continue; }
+    if(/[aeiouy]/.test(t)) { n++; continue; }     // has a vowel -> plausible word
+    // no vowel: allow a few common ones, else treat as gibberish
+    if(/^(mr|mrs|ms|dr|tv|pm|am|by|my|hymn|rhythm)$/.test(t)) n++;
+  }
+  return n;
+}
+
+// Build a per-student narrative. Produces SEPARATE summaries for Rounds 1–3 (grammar)
+// and Round 4 (writing), plus a short next-steps line. Returns a plain object so the hub
+// can store it in the tracking sheet and render a personalised report later.
+function buildNarrative(grammarLevel, aiLevel, s, finalLevel, noContent){
+  // ----- Rounds 1–3: grammar targets the student got wrong/right -----
+  const wrongTargets=[], rightTargets=[];
+  (state.scoreHist||[]).forEach(r=>(r.targets||[]).forEach(t=>{
+    if(t.result==='no'||t.result==='un') wrongTargets.push(t.target);
+    else if(t.result==='ok') rightTargets.push(t.target);
+  }));
+  const uniq=a=>a.filter((x,i)=>a.indexOf(x)===i);
+  const missed=uniq(wrongTargets).slice(0,6);
+  const mastered=uniq(rightTargets).slice(0,6);
+
+  const rounds13Strengths = mastered.length
+    ? 'Confident with: '+mastered.join(', ')+'.'
+    : 'No grammar items were answered correctly in Rounds 1–3.';
+  const rounds13Weaknesses = missed.length
+    ? 'Review these grammar points: '+missed.join(', ')+'.'
+    : 'No recurring grammar weaknesses stood out across the rounds.';
+
+  // ----- Round 4: writing dimensions, named to match the report bars -----
+  const dims=[
+    ['Cohesion & linking', s.cohesion],
+    ['Grammatical range & accuracy', s.grammar],
+    ['Vocabulary range & precision', s.vocabulary],
+    ['Task completion', s.topicAdherence]
+  ];
+  const sorted=dims.slice().sort((a,b)=>b[1]-a[1]);
+  const strengths=sorted.filter(d=>d[1]>=60).slice(0,2).map(d=>d[0]);
+  const weaknesses=sorted.filter(d=>d[1]<60).slice(-2).map(d=>d[0]);
+
+  let round4Strengths, round4Weaknesses;
+  if(noContent){
+    round4Strengths  = 'No recognizable words submitted, so the writing could not be assessed.';
+    round4Weaknesses = 'No writing was submitted for Round 4.';
+  } else {
+    round4Strengths  = strengths.length
+      ? 'Strongest on '+strengths.join(' and ')+'.'
+      : 'A solid, even attempt with no single standout strength yet.';
+    round4Weaknesses = weaknesses.length
+      ? 'Focus first on '+weaknesses.join(' and ')+'.'
+      : 'No single area stands out as weak — keep building range.';
+  }
+
+  // ----- Next steps: considers BOTH the grammar level (Rounds 1–3) and the writing
+  // level (Round 4). When the two disagree sharply it diagnoses the likely cause and
+  // gives a concrete recommendation; otherwise it gives level-appropriate study advice. -----
+  const levelHint={
+    'Pre-A1':'build core vocabulary and write very short, correct sentences daily',
+    'A1':'join short sentences with and / but / because, and practise past and future forms',
+    'A2':'state a main idea, give opinions with reasons, and vary your linking words',
+    'B1':'present both sides of an argument and use cohesive devices (however, as a result)',
+    'B2':'add nuance (tends to, arguably), address counter-arguments, and lift your vocabulary',
+    'C1':'refine tone and register, use idiom precisely, and tighten complex sentences'
+  };
+  const gI = FULL_ORDER.indexOf(grammarLevel);
+  const wBand = noContent ? 'Pre-A1' : aiLevel;
+  const wI = FULL_ORDER.indexOf(wBand);
+  const gap = (gI>=0 && wI>=0) ? (wI - gI) : 0;   // + means writing higher than grammar
+  let nextSteps;
+  if(noContent){
+    nextSteps = 'No writing was submitted, so this result reflects the grammar rounds only. '
+      + 'Re-take the test and complete the Round 4 writing task to get a full, accurate placement.';
+  } else if(gap >= 2){
+    // Writing markedly stronger than grammar (e.g. the Pre-A1 grammar / B2 writing case).
+    nextSteps = 'There is a large gap between your grammar rounds ('+grammarLevel+') and your writing ('+wBand+'). '
+      + 'This usually means the grammar rounds did not reflect your true ability — for example if they were rushed. '
+      + 'We recommend re-taking Rounds 1–3 (the grammar section) so your overall level is accurate. '
+      + 'Meanwhile, to keep improving your writing, '+(levelHint[wBand]||levelHint['B1'])+'.';
+  } else if(gap <= -2){
+    // Grammar markedly stronger than writing.
+    nextSteps = 'Your grammar ('+grammarLevel+') is well ahead of your writing ('+wBand+'). '
+      + 'Focus on putting that grammar into longer written responses: '+(levelHint[wBand]||levelHint['A2'])+'. '
+      + 'Aim to write a full response to each prompt rather than a few short sentences.';
+  } else {
+    // Balanced: advise toward the next band above the overall level.
+    const nextUp = FULL_ORDER[Math.min(FULL_ORDER.length-1, Math.max(gI,wI)+1)] || finalLevel;
+    nextSteps = 'To move toward '+nextUp+', '+(levelHint[finalLevel]||levelHint['A2'])+'.';
+  }
+
+  // Combined text fields kept for the Google Sheet / backward compatibility.
+  const strengthsText = (rounds13Strengths+' '+round4Strengths).trim();
+  const weaknessesText = (rounds13Weaknesses+' '+round4Weaknesses).trim();
+
+  return {
+    finalLevel, grammarLevel, writingLevel: noContent ? 'Pre-A1' : aiLevel,
+    rounds13Strengths, rounds13Weaknesses,
+    round4Strengths, round4Weaknesses,
+    nextSteps,
+    levelGap: gap,
+    strengthsText, weaknessesText,
+    grammarMissed: missed,
+    grammarMastered: mastered,
+    writingScores: s
+  };
+}
+
+function finishWithAI(essayText, evaluation) {
+  const cefrToNum = {'Pre-A1':0, 'A1':20, 'A2':40, 'B1':60, 'B2':80, 'C1':100};
+  const grammarLevel = state.essayLevel || state.levelReached;
+  const aiLevel = (cefrToNum[evaluation.writingLevel]!==undefined) ? evaluation.writingLevel : 'A1';
+
+  // Validate & clamp everything the AI returned.
+  const raw = evaluation.scores || {};
+  const s = {
+    wordCount:     clampScore(raw.wordCount, 0),
+    cohesion:      clampScore(raw.cohesion, 0),
+    grammar:       clampScore(raw.grammar, 0),
+    vocabulary:    clampScore(raw.vocabulary, 0),
+    topicAdherence:clampScore(raw.topicAdherence, 0)
+  };
+
+  // ---- Validated word count: shown as informational text only (NOT scored) ----
+  const validWC = validatedWordCount(essayText);
+
+  // Content gate: with essentially no real writing there is nothing to assess, so the
+  // writing side reads Pre-A1 regardless of the grammar level reached in Rounds 1–3.
+  const noContent = validWC < 5;
+
+  // Safety net: keep any single ability dimension from running away from the others,
+  // so one over-generous score can't distort the result. We anchor the cap to the
+  // essay's OWN scores (their median) rather than the AI's word-label, because the
+  // label has proven conservative and is no longer the source of truth — the four
+  // sub-scores are. The cap allows a generous spread above the median but trims a
+  // lone outlier.
+  const dimVals = [s.cohesion, s.grammar, s.vocabulary, s.topicAdherence].slice().sort((a,b)=>a-b);
+  const median = (dimVals[1] + dimVals[2]) / 2;
+  const dimCap = Math.min(100, median + 25);   // allow ~one band of spread above the median
+  const capDim = v => noContent ? 0 : Math.max(0, Math.min(dimCap, v));
+  const sCoh = capDim(s.cohesion), sGra = capDim(s.grammar),
+        sVoc = capDim(s.vocabulary), sTop = capDim(s.topicAdherence);
+
+  // ---- Writing sub-score (the only sample of real production) ----
+  // Four weighted ability dimensions. Word count is NOT a factor here — it is reported
+  // as text only, so a short-but-strong response is no longer unfairly suppressed.
+  const wScore = noContent ? 0 : Math.round(sCoh*0.25 + sGra*0.35 + sVoc*0.20 + sTop*0.20);
+
+  // Band shown for the writing task (used in the Writing Task Result pane + badge).
+  const writingBand = noContent ? 'Pre-A1' : scoreToLevel(wScore);
+  const displayWritingLevel = writingBand;
+
+  // ---- Grammar section level ----
+  const gScore = cefrToNum[grammarLevel] !== undefined ? cefrToNum[grammarLevel] : 60;
+
+  // ---- Overall CEFR: a straight 50/50 AVERAGE of the two displayed band levels
+  // (Grammar & Syntax Check  and  Writing Task Result). Averaging the bands directly
+  // means the headline can never contradict the two panes it sits above. ----
+  const gIdx = FULL_ORDER.indexOf(grammarLevel) >= 0 ? FULL_ORDER.indexOf(grammarLevel) : 0;
+  const wIdx = FULL_ORDER.indexOf(writingBand) >= 0 ? FULL_ORDER.indexOf(writingBand) : 0;
+  const finalCombinedLevel = FULL_ORDER[Math.round((gIdx + wIdx) / 2)];
+  const combinedScore = Math.round((cefrToNum[finalCombinedLevel] || 0)); // for the bar width
+
+  // Personalised narrative drawing on BOTH sections.
+  const narrative = buildNarrative(grammarLevel, writingBand, s, finalCombinedLevel, noContent);
+
+  // Ability-dimension bar: the score is on the CEFR anchor scale (0=Pre-A1 … 100=C1),
+  // so the fill maps directly onto the Pre-A1…C1 axis. We also snap the displayed band
+  // label so the bar can't visually overshoot the writer's overall level.
+  function makeBar(label, sub, score, footnote) {
+    let w = Math.max(0, Math.min(100, score));
+    return `
+      <tr>
+        <td style="width: 45%;"><strong>${label}</strong><br><span style="font-size:0.8em;color:var(--ink-faint)">${sub}</span></td>
+        <td style="vertical-align: middle;">
+          <div class="bar-wrap"><div class="bar-fill" style="width: ${w}%;"></div></div>
+          <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+          ${footnote ? '<div style="font-size:0.78rem;color:var(--ink-faint);margin-top:3px;">'+footnote+'</div>' : ''}
+        </td>
+      </tr>`;
+  }
+
+  // Small helper to render a bordered feedback line.
+  const fbLine = (text, color) => text
+    ? `<p class="feedback-text" style="border-left:3px solid ${color};">${esc(text)}</p>` : '';
+
+  let panesHTML = `
+    <div class="pane overall-pane">
+      <div class="pane-title">Overall CEFR Rating <span class="badge">${finalCombinedLevel}</span></div>
+      <p style="margin-top:0;">Your combined result for the writing section.</p>
+      <div style="margin: 18px 0 10px;">
+        <div class="bar-wrap" style="height:20px; border-radius:10px;">
+            <div class="bar-fill" style="width: ${Math.max(0, Math.min(100, combinedScore))}%; border-radius:10px;"></div>
+        </div>
+        <div class="scale" id="scale">
+            ${FULL_ORDER.map(st => '<span class="step'+(st === finalCombinedLevel ? ' on' : '')+'">'+st+'</span>').join('')}
+        </div>
+      </div>
+      <p class="weight-note" style="text-align:center;">Calculation: the average of your Grammar &amp; Syntax level (Rounds 1–3) and your Writing Task level (Round 4).</p>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Grammar &amp; Syntax Check <span class="badge" style="background:var(--ink-soft)">${grammarLevel}</span></div>
+      <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level achieved through the adaptive scenario rounds (Rounds 1–3).</p>
+      <div class="bar-wrap"><div class="bar-fill" style="width: ${gScore}%;"></div></div>
+      <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Overview from Rounds 1–3</div>
+      ${fbLine(narrative.rounds13Strengths, 'var(--good)')}
+      ${fbLine(narrative.rounds13Weaknesses, 'var(--accent)')}
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Writing Task Result <span class="badge" style="background:var(--ink-soft)">${displayWritingLevel}</span></div>
+      <p style="color:var(--ink-soft); font-size: 0.95rem; margin:0 0 14px;">Level of your free-writing response in Round 4 (full breakdown below).</p>
+      <div class="bar-wrap"><div class="bar-fill" style="width: ${wScore}%;"></div></div>
+      <div class="bar-labels"><span>Pre-A1</span><span>A1</span><span>A2</span><span>B1</span><span>B2</span><span>C1</span></div>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Overview from Round 4</div>
+      ${fbLine(narrative.round4Strengths, 'var(--good)')}
+      ${fbLine(narrative.round4Weaknesses, 'var(--accent)')}
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Detailed analysis of Round 4 <span class="badge" style="background:var(--ink-soft)">${displayWritingLevel}</span></div>
+      <p class="feedback-text"><strong>AI Feedback:</strong> ${esc(evaluation.feedback||'')}</p>
+      <table class="report-table">
+        <tbody>
+          ${makeBar('Cohesion & Connectives', 'Logical flow and linking words', sCoh)}
+          ${makeBar('Grammatical Complexity', 'Syntax range and accuracy', sGra)}
+          ${makeBar('Vocabulary Variance', 'Lexical diversity and precision', sVoc)}
+          ${makeBar('Task Completion', 'Addresses all parts of the prompt and stays on topic', sTop, validWC+' words written')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pane">
+      <div class="pane-title">Next steps</div>
+      <p class="feedback-text" style="border-left:3px solid var(--gold);">${esc(narrative.nextSteps)}</p>
+    </div>
+  `;
+
+  document.getElementById('report-panes').innerHTML = panesHTML;
+  document.getElementById('results-screen').classList.remove('hidden');
+  document.getElementById('results-screen').classList.add('fade');
+
+  // Build a readable per-round record of every grammar item: the target, what the
+  // student answered, and whether it was correct — for the Google Sheet.
+  const roundResponses = (state.scoreHist||[]).map((r,ri)=>({
+    round: ri+1,
+    node: r.node,
+    level: r.level,
+    score: r.score,
+    items: (r.targets||[]).map((t,ti)=>({
+      n: ti+1, target: t.target, type: t.type,
+      answer: t.response||'', result: t.result
+    }))
+  }));
+
+  // Hand the hub: final level, essay text, validated scores, the personalised
+  // narrative, the round-by-round responses, and the integrity telemetry.
+  reportToHub(finalCombinedLevel, essayText, {
+    scores: Object.assign({}, s, { cohesion:sCoh, grammar:sGra, vocabulary:sVoc, topicAdherence:sTop, validWordCount:validWC }),
+    grammarLevel: grammarLevel,
+    writingLevel: displayWritingLevel,
+    combinedScore: combinedScore,
+    narrative: narrative,
+    roundResponses: roundResponses,
+    integrity: integritySummary()
+  });
+  scrollTopNow();
+}
+
+window.startTest=startTest;
+window.submitRound=submitRound;
+window.submitEssay=submitEssay;
+window.updateWordCount=updateWordCount;
+window.returnToDashboard=returnToDashboard;
+})();
+</script>
+</body></html>
